@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: django-aula
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./minha_aula_online:/home/django/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    container_name: iniciando-django-db
+    tty: true
+    environment:
+      - POSTGRES_DB=django_aulas
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: iniciando-django-pgadmin
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@user.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - "9000:80"
+
+# volumes:
+#   iniciando-django-pgdata:
+#     external: true
